@@ -4,7 +4,12 @@ import { footer } from '../components/containers/Footer.js';
 const renderContentInMainPage = () => {
     return `
         <div class="columns">
-            <div class="column first__column">Column 1</div>
+            <div class="column first__column">
+                <form id='imageForm' enctype="multipart/form-data">
+                    <input type="file" multiple  accept="image/png, image/jpeg" name="imageInput">
+                    <input type="submit" value="Send file">
+                </form>
+            </div>
             <div class="column second__column">Column 2</div>
             <div class="column third__column">Column 3</div>
         </div>
