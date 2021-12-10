@@ -30,8 +30,8 @@ export class UserAdapter {
   }
 
 
-  setCurrentUser(email) {
-    storage.setItem("currentUser", JSON.stringify(email));
+  setCurrentUser(token) {
+    storage.setItem("currentUser", JSON.stringify(token));
   }
 
   getCurrentUser() {
