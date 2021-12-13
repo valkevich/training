@@ -2,6 +2,8 @@ import { Form } from "./Form.js";
 import { userStorageAdapter } from "../../storage/adapters/UserAdapter.js";
 import { Modal } from "../modals/Modal.js";
 import { modalWindow } from "../modals/Modal.js";
+import { authorizationApi } from "../../api/authApi.js";
+
 
 const getEditFormTemplate = (user) => {
     return `
@@ -47,19 +49,14 @@ export class EditUserForm extends Form {
         this.form = form;
         this.user = {};
         this.renderEditForm();
-        this.findUser();
         this.openEditForm();
         this.onSubmit();
         this.deleteUser();
     }
 
-
-    findUser() {
-        document.addEventListener('click', (e) => {
-            if (e.target.id === 'user__data--edit-button' || e.target.id === 'user__data--delete-button') {
-                this.user = userStorageAdapter.getUser(e.target.parentElement.parentElement.id);
-            }
-        })
+    async findUser(id) {
+        this.user = await authorizationApi.getUser(id);
+        return this.user;
     }
 
     renderEditForm() {
@@ -117,9 +114,9 @@ export class EditUserForm extends Form {
         if (passwords.newPasswords[0] === passwords.newPasswords[1] && passwords.oldPassword === this.user.password) {
             return true;
         } else {
-            if (Object.keys(this.user).length !== 0){
+            if (Object.keys(this.user).length !== 0) {
                 document.querySelector('#edit__password-repeat--warning').textContent = 'Password data entered incorrectly';
-            }      
+            }
         }
     }
 
@@ -137,28 +134,24 @@ export class EditUserForm extends Form {
     }
 
     deleteUser() {
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', async (e) => {
             if (e.target.id === 'user__data--delete-button') {
-                if (this.user.email === userStorageAdapter.getCurrentUser()) {
-                    alert('it is impossible to delete this user');
-                } else {
-                    userStorageAdapter.deleteUser(this.user.email)
-                    window.location.reload();
-                }
+                const user = await this.findUser(e.target.parentElement.parentElement.id);
+                await authorizationApi.deleteUser(user[0]._id);
+                window.location.reload();
             }
         })
-
-
     }
 
     onSubmit() {
         document.addEventListener('submit', (e) => {
             if (e.target.classList.contains('modal-window__content--form')) {
                 e.preventDefault();
-                if (this.saveUserData()) {
-                    new Modal().closeModal();
-                    window.location.reload();
-                }
+                console.log(this.user);
+                // if (this.saveUserData()) {
+                //     new Modal().closeModal();
+                //     window.location.reload();
+                // }
             }
         })
     }

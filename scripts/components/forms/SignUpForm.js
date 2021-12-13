@@ -1,6 +1,7 @@
 import { userStorageAdapter } from "../../storage/adapters/UserAdapter.js";
 import { Form } from "./Form.js";
 import { modalWindow } from "../modals/Modal.js";
+import { authorizationApi } from "../../api/authApi.js";
 
 
 
@@ -9,12 +10,12 @@ const getSignInFormTemplate = () => {
         <h2 class="form--title">Sign up</h2>
         <label for="email__input" class="input__label">Email</label>
         <input type="email" id="email__input--sign-up" class="modal-window__content--input" required="required"
-            pattern="^[^\\s@]+@[^\\s@]+$" data-error="Email incorrect" name="email">
+            pattern="^[^\\s@]+@[^\\s@]+$" data-error="Email incorrect" name="userEmail">
         <span id="email__warning" class="warning__text"></span>
 
         <label for="password__input" class="input__label">Password</label>
         <input type="password" id="password__input--sign-up" class="modal-window__content--input" required="required"
-            pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect" autocomplete="off" name="password">
+            pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect" autocomplete="off" name="userPassword">
         <span id="password__warning" class="warning__text"></span>
 
         <label for="password-repeat__input--sign-up" class="input__label">Repeat password</label>
@@ -24,15 +25,15 @@ const getSignInFormTemplate = () => {
 
         <label for="date-input" class="input__label">Date of Birth</label>
         <input type="date" id="date-input" class="modal-window__content--input"
-            required="required" data-error="Date not selected" name="birthDate">
+            required="required" data-error="Date not selected" name="userBirthDate">
         <span id="birth-data__warning" class="warning__text"></span>
 
         <div class="modal-window__radio-buttons">
             <p class="input__label">Sex</p>
-            <input type="radio" id="male-radio" name="sex" value="male" class="modal-window__radio-button">
+            <input type="radio" id="male-radio" name="userSex" value="male" class="modal-window__radio-button">
             <label  for="male-radio" class="radio__label">Male</label>
         
-            <input type="radio" id="female-radio" name="sex" value="female" class="modal-window__radio-button" checked> 
+            <input type="radio" id="female-radio" name="userSex" value="female" class="modal-window__radio-button" checked> 
             <label for="female-radio" class="radio__label">Female</label>     
         </div>
 
@@ -54,6 +55,7 @@ export class SignUpForm extends Form {
         this.form = document.createElement('form');
         this.form.classList.add('modal-window__content--form');
         this.form.id = 'sign-up__form';
+        this.form.enctype = 'multipart/form-data'
         this.form.innerHTML = getSignInFormTemplate();
         return this.form;
     }
@@ -76,7 +78,7 @@ export class SignUpForm extends Form {
 
     confirmPassword() {
         this.validate();
-        if (this.userData.password === this.userData.confirmedPassword) {
+        if (this.userData.userPassword === this.userData.confirmedPassword) {
             return true;
         } else {
             const confirmPasswordInput = document.querySelector('#password-repeat__input--sign-up');
@@ -86,11 +88,10 @@ export class SignUpForm extends Form {
     }
 
     registerUser() {
-        if (this.confirmPassword()) {
-            userStorageAdapter.setUser(this.userData);
-            return true;
-        } else {
-            return false;
+        this.getUserData();
+        if(this.confirmPassword()) {
+            authorizationApi.registration(JSON.stringify(this.userData));
+            return true
         }
     }
 
@@ -98,8 +99,6 @@ export class SignUpForm extends Form {
         document.addEventListener('submit', (e) => {
             if (e.target.id === 'sign-up__form') {
                 super.onSubmit(e);
-                this.getUserData();
-                this.registerUser();
                 if (this.registerUser()) {
                     this.cleanForm();
                     modalWindow.closeModal();
