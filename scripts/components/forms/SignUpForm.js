@@ -77,6 +77,7 @@ export class SignUpForm extends Form {
     }
 
     confirmPassword() {
+        this.getUserData()
         this.validate();
         if (this.userData.userPassword === this.userData.confirmedPassword) {
             return true;
@@ -87,21 +88,26 @@ export class SignUpForm extends Form {
         }
     }
 
-    registerUser() {
+    async registerUser() {
         this.getUserData();
         if(this.confirmPassword()) {
-            authorizationApi.registration(JSON.stringify(this.userData));
-            return true
+            await authorizationApi.registration(JSON.stringify(this.userData));
+            return true;
+        } else {
+            return false;
         }
     }
 
     onSubmit() {
-        document.addEventListener('submit', (e) => {
+        document.addEventListener('submit', async (e) => {
             if (e.target.id === 'sign-up__form') {
                 super.onSubmit(e);
-                if (this.registerUser()) {
+                try {
+                    await this.registerUser();
                     this.cleanForm();
                     modalWindow.closeModal();
+                } catch(error) {
+                    this.form[0].nextElementSibling.textContent = error.message
                 }
             }
         })

@@ -2,6 +2,7 @@ import { Page } from "../pages/Page.js";
 import { getMainPage } from "../pages/mainPage.js";
 import { getUsersPage } from "../pages/usersPage.js";
 import { storage } from "../storage/storage.js";
+import { getUserPosts } from "../pages/userPosts.js";
 
 
 export class Router {
@@ -9,6 +10,7 @@ export class Router {
         this.routes = {
             '/': getMainPage,
             '/users': getUsersPage,
+            '/posts': getUserPosts,
         };
         this.init();
         this.listen();

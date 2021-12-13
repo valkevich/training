@@ -34,7 +34,8 @@ export const renderContentInUsersPage = async () => {
                 <div class="user__data-column">${user.userBirthDate}</div>
                 <div class="user__data-column">${user.userSex}</div>
                 <div class="user__data-column">
-                    <button id="user__data--edit-button">Edit</button>
+                    <button id="edit-password--button">Edit password</button>
+                    <button id="edit-email--button">Edit email</button>
                     <button id="user__data--delete-button">Delete</button>
                 </div>
             </div> 

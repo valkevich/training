@@ -5,41 +5,40 @@ import { modalWindow } from "../modals/Modal.js";
 import { authorizationApi } from "../../api/authApi.js";
 
 
-const getEditFormTemplate = (user) => {
+const getEditEmailForm = (user) => {
     return `
-        <h2 class="form--title">Edit user</h2>
+    <h2 class="form--title">Edit email</h2>
 
-        <label for="password__input" class="input__label">Old password</label>
-        <input type="password" id="edit__user--old-password" class="modal-window__content--input edit__form--password old-password" required="required" autocomplete="off"
-            pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
-        <span id="password__warning" class="warning__text"></span>
+    <label for="email__input" class="input__label">Email</label>
+    <input type="email" id="email__input--sign-up" class="modal-window__content--input" required="required"
+        pattern="^[^\\s@]+@[^\\s@]+$" data-error="Email incorrect" name="userEmail" value="${user[0].userEmail}">
+    <span id="edit-email__warning" class="warning__text"></span>
+    
+    <button class="modal-window__content--button" id="save__user-email--button">Save</button>
+`
+}
 
-        <label for="password__input" class="input__label">New password</label>
-        <input type="password"   id="edit__user--new-password" class="modal-window__content--input edit__form--password new-password" required="required" autocomplete="off"
-            pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
-        <span id="password__warning" class="warning__text"></span>
+const getEditPasswordForm = (user) => {
+    return `
+    <h2 class="form--title">Edit password</h2>
 
-        <label for="password__input" class="input__label">Repeat new password</label>
-        <input type="password"  name="password" id="password__input--edit-user" class="modal-window__content--input edit__form--password new-password" required="required" autocomplete="off"
-            pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
-        <span id="edit__password-repeat--warning" class="warning__text"></span>
+    <label for="password__input" class="input__label">Old password</label>
+    <input type="password" name="userOldPassword" id="edit__user--old-password" class="modal-window__content--input edit__form--password old-password" required="required" autocomplete="off"
+        pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
+    <span id="password__warning" class="warning__text"></span> 
 
-        <label for="date-input" class="input__label">Date of Birth</label>
-        <input type="date" value="${user.birthDate}" name="birthDate" id="date-input" class="modal-window__content--input" autocomplete="off"
-            required="required" data-error="Date not selected">
-        <span id="birth-data__warning" class="warning__text"></span>
+    <label for="password__input" class="input__label">New password</label>
+    <input type="password" id="edit__user--new-password" class="modal-window__content--input edit__form--password new-password" required="required" autocomplete="off"
+        pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
+    <span id="password__warning" class="warning__text"></span>
 
-        <div class="modal-window__radio-buttons">
-            <p class="input__label">Sex</p>
-            <input type="radio" id="male-radio" name="sex" value="male" class="modal-window__radio-button">
-            <label  for="male-radio" class="radio__label">Male</label>
-
-            <input type="radio" id="female-radio" name="sex" value="female" class="modal-window__radio-button" checked> 
-            <label for="female-radio" class="radio__label">Female</label>     
-        </div>
-
-        <button class="modal-window__content--button" id="save__user-data--button">Save</button>
-    `
+    <label for="password__input" class="input__label">Repeat new password</label>
+    <input type="password"  name="userPassword" id="password__input--edit-user" class="modal-window__content--input edit__form--password new-password" required="required" autocomplete="off"
+        pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$' data-error="Password incorrect">
+    <span id="edit__password-repeat--warning" class="warning__text"></span>
+    
+    <button class="modal-window__content--button" id="save__user-data--button">Save</button>
+`
 }
 
 
@@ -48,7 +47,6 @@ export class EditUserForm extends Form {
         super();
         this.form = form;
         this.user = {};
-        this.renderEditForm();
         this.openEditForm();
         this.onSubmit();
         this.deleteUser();
@@ -59,32 +57,42 @@ export class EditUserForm extends Form {
         return this.user;
     }
 
-    renderEditForm() {
+    renderEditForm(getTemplateFunc, formType) {
         this.form = document.createElement('form');
         this.form.classList.add('modal-window__content--form');
-        this.form.id = this.user.email;
-        this.form.innerHTML = getEditFormTemplate(this.user);
+        this.form.classList.add('modal-window--edit-form')
+        this.form.classList.add(formType)
+        this.form.innerHTML = getTemplateFunc(this.user);
         return this.form;
     }
 
     openEditForm() {
-        document.addEventListener('click', (e) => {
-            if (e.target.id === 'user__data--edit-button') {
-                this.renderEditForm();
-                modalWindow.openModal(this.renderEditForm());
+        document.addEventListener('click', async (e) => {
+            if (e.target.id === 'edit-password--button') {
+                await this.findUser(e.target.parentElement.parentElement.id);
+                modalWindow.openModal(this.renderEditForm(getEditPasswordForm, 'password-edit-form'));
+                console.log(this.user);
+                return this.user;
+            }
+            if (e.target.id === 'edit-email--button') {
+                await this.findUser(e.target.parentElement.parentElement.id);
+                modalWindow.openModal(this.renderEditForm(getEditEmailForm, 'email-edit-form'));
+                console.log(this.user);
+                return this.user;
             }
         })
     }
 
     changeUserData() {
+        this.openEditForm()
         Array.from(this.form).forEach((element) => {
-            if (element.nodeName === 'INPUT') {
+            if (element.nodeName === 'INPUT' && element.hasAttribute('name')) {
                 if (element.type === 'radio') {
                     if (element.checked === true) {
-                        this.user[element.name] = element.value;
+                        this.user[0][element.name] = element.value;
                     }
                 } else {
-                    this.user[element.name] = element.value;
+                    this.user[0][element.name] = element.value;
                 }
 
             }
@@ -92,45 +100,9 @@ export class EditUserForm extends Form {
         return this.user;
     }
 
-    checkPassword() {
-        const passwords = {
-            newPasswords: [],
-        }
-        Array.from(this.form).forEach((elem) => {
-            if (elem.classList.contains('edit__form--password')) {
-                if (elem.classList.contains('new-password')) {
-                    passwords.newPasswords.push(elem.value);
-                } else {
-                    passwords.oldPassword = elem.value;
-                }
-            }
+    async saveNewUserEmail() {
+        await authorizationApi.updateUserEmail(this.changeUserData());
 
-        })
-        return passwords;
-    }
-
-    validatePasswords() {
-        const passwords = this.checkPassword();
-        if (passwords.newPasswords[0] === passwords.newPasswords[1] && passwords.oldPassword === this.user.password) {
-            return true;
-        } else {
-            if (Object.keys(this.user).length !== 0) {
-                document.querySelector('#edit__password-repeat--warning').textContent = 'Password data entered incorrectly';
-            }
-        }
-    }
-
-    saveUserData() {
-        if (this.validatePasswords()) {
-            const previousUserData = { ...this.user };
-            const actualUserData = this.changeUserData();
-            const users = userStorageAdapter.getUsers();
-            users[previousUserData.email] = actualUserData;
-            userStorageAdapter.setUsers(users);
-            return true;
-        } else {
-            return false;
-        }
     }
 
     deleteUser() {
@@ -144,14 +116,26 @@ export class EditUserForm extends Form {
     }
 
     onSubmit() {
-        document.addEventListener('submit', (e) => {
-            if (e.target.classList.contains('modal-window__content--form')) {
+        document.addEventListener('submit', async (e) => {
+            if (e.target.classList.contains('email-edit-form')) {
                 e.preventDefault();
-                console.log(this.user);
-                // if (this.saveUserData()) {
-                //     new Modal().closeModal();
-                //     window.location.reload();
-                // }
+                try {
+                    await authorizationApi.updateUserEmail(this.changeUserData());
+                    new Modal().closeModal();
+                    window.location.reload();
+                } catch(error) {
+                    e.target.lastElementChild.previousElementSibling.textContent = error.message
+                }         
+            }
+            if (e.target.classList.contains('password-edit-form')) {
+                e.preventDefault();
+                try {
+                    await authorizationApi.updateUserPassword(this.changeUserData())
+                    new Modal().closeModal();
+                    window.location.reload();
+                } catch(error) {
+                    e.target.lastElementChild.previousElementSibling.textContent = error.message
+                } 
             }
         })
     }

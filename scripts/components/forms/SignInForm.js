@@ -61,26 +61,26 @@ export class SignInForm extends Form {
 
     async loginUser() {
         this.getUserData();
-        try {
-            const currentUserData = await authorizationApi.login(JSON.stringify(this.userData))
-            if(currentUserData.token){
-                userStorageAdapter.setCurrentUser(currentUserData);
-                this.cleanForm();
-                modalWindow.closeModal();
-                new Router().navigate('/users');
-                window.location.reload()
-            }
-        } catch(e) {
-            console.log(e);
+        const currentUserData = await authorizationApi.login(JSON.stringify(this.userData))
+        if (currentUserData.token) {
+            userStorageAdapter.setCurrentUser(currentUserData);
+            this.cleanForm();
+            modalWindow.closeModal();
+            new Router().navigate('/posts');
+            window.location.reload()
         }
     }
 
 
     onSubmit() {
-        document.addEventListener('submit', (e) => {
+        document.addEventListener('submit', async (e) => {
             if (e.target.id === 'sign-in__form') {
                 super.onSubmit(e);
-                this.loginUser();
+                try {
+                    await this.loginUser();
+                } catch (error) {
+                    e.target.lastElementChild.previousElementSibling.textContent = error.message
+                }
             }
         })
     }
