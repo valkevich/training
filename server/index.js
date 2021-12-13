@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import router from './routers/router.js';
 import authRouter from './routers/authRouter.js'
 import fileUploader from 'express-fileupload';
 import { corsMiddleware } from './cors.js';

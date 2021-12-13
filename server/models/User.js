@@ -7,6 +7,7 @@ const User = new Schema({
     userPassword: {type: String, required: true},
     userSex: {type: String},
     userBirthDate: {type: String},
+    posts: {type: Array}
 })
 
 export const userModel = model('User', User);
