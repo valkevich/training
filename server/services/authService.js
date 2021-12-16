@@ -1,7 +1,9 @@
 import { userModel } from '../models/User.js';
+import { postModel } from '../models/Post.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
-import { secret } from '../config.js';
+import secret from '../config/config.js';
+import { postService } from './postService.js';
 
 const generateAccessToken = (id) => {
     const payload = {
@@ -34,7 +36,7 @@ class AuthService {
         const token = generateAccessToken(user._id)
         return { user, token }
     }
-
+ 
     async changeUserPassword(updatedUser) {
         const userId = updatedUser._id;
         const oldUserData = await userModel.findOne({ _id: userId })

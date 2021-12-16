@@ -1,20 +1,26 @@
-export class FileLoadForm {
-    constructor(form) {
-        this.form = form;
-        this.sendImage()
-    }
+import { postApi } from '../../api/postApi.js';
+import { userStorageAdapter } from "../../storage/adapters/UserAdapter.js";
 
-    sendImage() {
-        this.form.onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                await fetch('http://localhost:5000/', {
-                    method: 'POST',
-                    body: new FormData(this.form)
-                });
-            } catch (e) {
-                console.log(e);
+
+export class FileLoadForm {
+    constructor() {
+        this.form = document.querySelector('.send__image--form');
+        this.onSubmit()
+    }
+    onSubmit() {
+        document.addEventListener('click', async (e) => {
+            if (e.target.id === 'submit__file--button') {
+                e.preventDefault()
+                const currentUser = userStorageAdapter.getCurrentUser();
+                const formData = new FormData(this.form)
+                formData.append('user', currentUser.user._id)
+                console.log(formData);
+                try {
+                    await postApi.createPost(formData);
+                } catch (e) {
+                    console.log(e);
+                }
             }
-        }
+        })
     }
 }   

@@ -10,3 +10,10 @@ export const makeRequest = (method, uri, user, header) => {
         body: user,
     });
 };
+
+export const makePostRequest = (method, uri, data, header) => {
+    return  fetch(requestUrl + uri, {
+        method,
+        body: data,
+    });
+}

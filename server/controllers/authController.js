@@ -2,6 +2,8 @@ import { userModel } from '../models/User.js';
 import bcrypt from "bcryptjs";
 import { json } from 'express';
 import authService from '../services/authService.js';
+import { postService } from '../services/postService.js';
+import { postModel } from '../models/Post.js';
 
 class authController {
     async registration(req, res) {
@@ -34,29 +36,29 @@ class authController {
             res.status(200).json(users);
         } catch (e) {
             console.log(e);
-            res.status(400).json({ message: "Нет зарегистрированных пользователей"});
+            res.status(400).json({ message: "Нет зарегистрированных пользователей" });
         }
     }
 
     async getUser(req, res) {
         try {
             const { _id } = req.body;
-            const user = await userModel.find({_id: _id})
+            const user = await userModel.find({ _id: _id })
             res.status(200).json(user)
         } catch (e) {
             console.log(e);
-            res.status(400).json({ message: "Пользователь не найден"});
+            res.status(400).json({ message: "Пользователь не найден" });
         }
     }
 
     async deleteUser(req, res) {
         try {
             const { _id } = req.body;
-            await userModel.deleteOne({_id: _id});
-            res.status(200).json({message:"User successfully deleted"})
-        } catch(e) {
+            await userModel.deleteOne({ _id: _id });
+            res.status(200).json({ message: "User successfully deleted" })
+        } catch (e) {
             console.log(e);
-            res.status(400).json({ message: "Не удалось удалить пользователя"});
+            res.status(400).json({ message: "Не удалось удалить пользователя" });
         }
     }
 
@@ -64,27 +66,37 @@ class authController {
         try {
             const updatedUser = req.body;
             const _id = updatedUser._id;
-            if(await authService.changeUserPassword(updatedUser)) {
+            if (await authService.changeUserPassword(updatedUser)) {
                 updatedUser.userPassword = bcrypt.hashSync(updatedUser.userPassword, 7);
-                await userModel.replaceOne( {_id}, updatedUser );
-                res.status(200).json({message: 'Successfully updated'});    
+                await userModel.replaceOne({ _id }, updatedUser);
+                res.status(200).json({ message: 'Successfully updated' });
             }
-        } catch(e) {
+        } catch (e) {
             console.log(e);
-            res.status(400).json({message: e.message});
+            res.status(400).json({ message: e.message });
         }
     }
 
-    
+
     async updateUserEmail(req, res) {
         try {
             const updatedUser = req.body;
             const _id = updatedUser._id;
-            await userModel.replaceOne( {_id}, updatedUser );
-            res.status(200).json({message: 'Successfully updated'})
-        } catch(e) {
+            await userModel.replaceOne({ _id }, updatedUser);
+            res.status(200).json({ message: 'Successfully updated' })
+        } catch (e) {
             console.log(e);
-            res.status(400).json({message: "пользователь с таким Email уже существует"});
+            res.status(400).json({ message: "пользователь с таким Email уже существует" });
+        }
+    }
+
+    async makePost(req, res) {
+        try {
+            const image = req.body;
+            res.status(200).json(image);
+            
+        } catch (e) {
+            console.log(e);
         }
     }
 }

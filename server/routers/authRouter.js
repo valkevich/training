@@ -11,5 +11,6 @@ authRouter.post('/getUser', controller.getUser);
 authRouter.delete('/deleteUser', controller.deleteUser);
 authRouter.put('/updateUserEmail', controller.updateUserEmail);
 authRouter.put('/updateUserPassword', controller.updateUserPassword);
+authRouter.post('/upload', controller.makePost)
 
 export default authRouter;

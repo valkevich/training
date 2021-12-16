@@ -79,6 +79,12 @@ class AuthApi {
             throw new Error(message)
         }
     }
+    
+    async makePost(form) {
+        const response = await makeRequest('POST', '/auth/upload', JSON.stringify(new FormData(form)));
+        const { message } = await response.json();
+        console.log(message);
+    }
 }
 
 export const authorizationApi = new AuthApi();
