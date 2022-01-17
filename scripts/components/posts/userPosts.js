@@ -1,4 +1,3 @@
-
 import { postApi } from '../../api/postApi.js';
 import { userStorageAdapter } from '../../storage/adapters/UserAdapter.js';
 
@@ -15,7 +14,7 @@ export class UserPosts {
             return false;
         }
     }
-
+ 
     async getUserPosts() {
         return await postApi.getUserPosts()
     }
@@ -37,6 +36,7 @@ export class UserPosts {
             const userPosts = await this.findUserPosts()
             const postsContainer = document.querySelector('.user__posts')
             userPosts.forEach(post => {
+                console.log(post);
                 const image = document.createElement('img');
                 image.src = `${post.decodedImage}`;
                 image.classList.add('user__post--image')

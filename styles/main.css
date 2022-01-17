@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -7,11 +7,6 @@
 body {
     background-color: #F6F6F6;
 }
-
-
-
-
-/* Modal window styles */
 
 .modal-window {
     display: flex;
@@ -22,7 +17,7 @@ body {
     height: 100vh;
     align-items: center;
     justify-content: center;
-    background-color:rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-window__content {
@@ -79,7 +74,7 @@ body {
 
 .modal-window__radio-button {
     margin-top: 10px;
-    
+
 }
 
 .warning__text {
@@ -103,7 +98,7 @@ body {
 }
 
 .modal-window__content--button:hover {
-    background:#90D4F4;
+    background: #90D4F4;
 }
 
 .modal-window__close {
@@ -116,11 +111,11 @@ body {
     cursor: pointer;
 }
 
-    .modal-window__close:hover {
+.modal-window__close:hover {
     opacity: 1;
 }
 
-    .modal-window__close:before, .modal-window__close:after {
+.modal-window__close:before, .modal-window__close:after {
     position: absolute;
     left: 15px;
     content: ' ';
@@ -129,11 +124,11 @@ body {
     background-color: #333;
 }
 
-    .modal-window__close:before {
+.modal-window__close:before {
     transform: rotate(45deg);
 }
 
-    .modal-window__close:after {
+.modal-window__close:after {
     transform: rotate(-45deg);
 }
 
@@ -163,7 +158,7 @@ body {
 
 .navigation__user-email {
     font-size: 22px;
-    color:#027CB5;
+    color: #027CB5;
 }
 
 .navigation__button {
@@ -180,7 +175,7 @@ body {
 }
 
 .navigation__button:hover {
-    background:#8EDBFF
+    background: #8EDBFF
 }
 
 .columns {
@@ -204,7 +199,8 @@ body {
 }
 
 .first__column {
-    background: #99EB3C;;
+    background: #99EB3C;
+    ;
 }
 
 .second__column {
@@ -212,7 +208,7 @@ body {
 }
 
 .third__column {
-    background: #EB7600;   
+    background: #EB7600;
 }
 
 
@@ -238,6 +234,8 @@ body {
 }
 
 .user__post--image {
-    width: 300px;
-    height: 400px;
+    width: 150px;
+    height: 200px;
+    margin: 10px 0;
+    border: 1px solid #000;
 }

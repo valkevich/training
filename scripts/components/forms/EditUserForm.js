@@ -3,6 +3,7 @@ import { userStorageAdapter } from "../../storage/adapters/UserAdapter.js";
 import { Modal } from "../modals/Modal.js";
 import { modalWindow } from "../modals/Modal.js";
 import { authorizationApi } from "../../api/authApi.js";
+import { usersApi } from "../../api/usersApi.js";
 
 
 const getEditEmailForm = (user) => {
@@ -53,7 +54,7 @@ export class EditUserForm extends Form {
     }
 
     async findUser(id) {
-        this.user = await authorizationApi.getUser(id);
+        this.user = await usersApi.getUser(id);
         return this.user;
     }
 
@@ -101,7 +102,7 @@ export class EditUserForm extends Form {
     }
 
     async saveNewUserEmail() {
-        await authorizationApi.updateUserEmail(this.changeUserData());
+        await usersApi.updateUserEmail(this.changeUserData());
 
     }
 
@@ -109,7 +110,7 @@ export class EditUserForm extends Form {
         document.addEventListener('click', async (e) => {
             if (e.target.id === 'user__data--delete-button') {
                 const user = await this.findUser(e.target.parentElement.parentElement.id);
-                await authorizationApi.deleteUser(user[0]._id);
+                await usersApi.deleteUser(user[0]._id);
                 window.location.reload();
             }
         })
@@ -120,7 +121,7 @@ export class EditUserForm extends Form {
             if (e.target.classList.contains('email-edit-form')) {
                 e.preventDefault();
                 try {
-                    await authorizationApi.updateUserEmail(this.changeUserData());
+                    await usersApi.updateUserEmail(this.changeUserData());
                     new Modal().closeModal();
                     window.location.reload();
                 } catch(error) {
@@ -130,7 +131,7 @@ export class EditUserForm extends Form {
             if (e.target.classList.contains('password-edit-form')) {
                 e.preventDefault();
                 try {
-                    await authorizationApi.updateUserPassword(this.changeUserData())
+                    await usersApi.updateUserPassword(this.changeUserData())
                     new Modal().closeModal();
                     window.location.reload();
                 } catch(error) {

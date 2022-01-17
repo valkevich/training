@@ -2,8 +2,6 @@ import { userStorageAdapter } from "../../storage/adapters/UserAdapter.js";
 import { Form } from "./Form.js";
 import { modalWindow } from "../modals/Modal.js";
 import { authorizationApi } from "../../api/authApi.js";
-// import { getUsersPage } from "../../pages/usersPage.js";
-// import { Page } from "../../pages/Page.js";
 import { Router } from "../../router/router.js";
 
 

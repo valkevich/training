@@ -14,7 +14,6 @@ export class FileLoadForm {
                 const currentUser = userStorageAdapter.getCurrentUser();
                 const formData = new FormData(this.form)
                 formData.append('user', currentUser.user._id)
-                console.log(formData);
                 try {
                     await postApi.createPost(formData);
                 } catch (e) {
