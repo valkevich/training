@@ -21,11 +21,15 @@ class AuthApi {
             throw new Error(message)
         }
     }
-
-
+    
     async makePost(form) {
         const response = await makeRequest('POST', '/auth/upload', JSON.stringify(new FormData(form)));
         const { message } = await response.json();
+        if(response.status === 200) {
+            return message;
+        } else {
+            throw new Error(message)
+        }
     }
 }
 

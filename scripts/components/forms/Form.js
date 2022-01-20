@@ -26,7 +26,7 @@ export class Form {
 
     getUserData() {
         Array.from(this.form).forEach((element) => {
-            if (element.nodeName === 'INPUT') {
+            if (element.nodeName === 'INPUT' && element.type !== 'file') {
                 if (element.type === 'radio') {
                     if (element.checked === true) {
                         this.userData[element.name] = element.value;

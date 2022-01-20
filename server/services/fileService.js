@@ -19,18 +19,10 @@ class FileService {
         }
     }
 
-    async getFile(user, name) {
+    getFilePath(user, name) {
         try {
             const filePath = `${config.assetsPath}\\${user}\\${name}`;
-            await fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    throw new Error('File reading error!');
-                } else {
-                    return file.data = data;
-                }
-            });
-            console.log(file);
-            return file;
+            return filePath;
         } catch (error) {
             console.log(error);
         }

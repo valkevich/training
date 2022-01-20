@@ -28,7 +28,7 @@ export const renderContentInUsersPage = async () => {
             </div>
         </section>
     `);
-    if(typeof users !== "string" && users.message !== 'Пользователь не авторизован!') {
+    if(users.message !== 'Пользователь не авторизован!') {
         users.forEach((user) => {
             usersPageContent.push(`
                 <div class="users__data-line" id="${user._id}">

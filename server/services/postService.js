@@ -5,6 +5,8 @@ import { userModel } from '../models/User.js';
 import config from '../config/config.js';
 import fileService from './fileService.js';
 import base64Img from 'base64-img';
+import { title } from 'process';
+import e from 'express';
 
 
 class PostService {
@@ -46,6 +48,32 @@ class PostService {
         const posts = await postModel.find();
         return posts;
     }
+
+    async getUserPost(id) {
+        const post = await postModel.findById(id)
+        return post
+    }
+
+    async changePostData(newPostData, newPostImage) {
+        if (newPostImage) {
+            const fileName = fileService.writeFile(newPostData.user, newPostImage);
+            const filePath = fileService.getFilePath(newPostData.user, fileName);
+            const decodedImage = base64Img.base64Sync(filePath);
+            newPostData.decodedImage = decodedImage;
+            await postModel.findOneAndUpdate({ _id: newPostData.id }, newPostData, {
+                new: true
+            });
+        } else {
+            await postModel.findOneAndUpdate({ _id: newPostData.id }, newPostData, {
+                new: true
+            });
+        }
+    }
+
+    async deletePost(id) {
+        await postModel.findByIdAndDelete(id);
+    }
+
 };
 
 export const postService = new PostService();

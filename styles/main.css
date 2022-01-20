@@ -74,7 +74,6 @@ body {
 
 .modal-window__radio-button {
     margin-top: 10px;
-
 }
 
 .warning__text {
@@ -131,9 +130,6 @@ body {
 .modal-window__close:after {
     transform: rotate(-45deg);
 }
-
-
-/* Page styles */
 
 .wrap {
     max-width: 1480px;
@@ -200,7 +196,6 @@ body {
 
 .first__column {
     background: #99EB3C;
-    ;
 }
 
 .second__column {
@@ -233,9 +228,108 @@ body {
     justify-content: center;
 }
 
+.user-post__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #000;
+}
+
 .user__post--image {
     width: 150px;
     height: 200px;
     margin: 10px 0;
-    border: 1px solid #000;
+}
+
+.post__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto;
+    max-width: 400px;
+}
+
+.send__image--form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit__post--form{
+    display: flex;
+    flex-direction: column;
+}
+
+.send__image--form>input {
+    margin: 15px 5px;
+    padding: 4px;
+}
+
+#submit__file--button {
+    margin: 0 auto;
+    width: 50%;
+    height: 30px;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    background-color: #9EDEDE;
+    cursor: pointer;
+}
+
+#submit__file--button:hover {
+    background-color: #6B9797;
+}
+
+#user--posts__button {
+    width: 60%;
+    height: 30px;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #9861EB;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+#user--posts__button:hover {
+    background-color: #794DBB;
+}
+
+.edit-post__button {
+    margin-top: 10px;
+    width: 60%;
+    height: 30px;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #9861EB;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.delete-post__button {
+    margin-top: 5px;
+    width: 40%;
+    height: 25px;
+    border: none;
+    border-radius: 7px;
+    font-size: 11px;
+    color: #fff;
+    background-color: #A90000;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+
+.edit-post__button:hover {
+    background-color: #794DBB;
+}
+
+.delete-post__button:hover {
+    background-color: #850000;
 }

@@ -5,6 +5,7 @@ import { SignUpForm } from "../components/forms/SignUpForm.js";
 import { Router } from "../router/router.js";
 import { FileLoadForm } from "../components/forms/FileLoadForm.js"
 import { UserPosts } from '../components/posts/userPosts.js'
+import { EditPostForm } from "../components/forms/EditPostForm.js";
 
 new Router()
 
@@ -13,6 +14,7 @@ new SignUpForm();
 new SignInForm();
 new FileLoadForm()
 new UserPosts()
+new EditPostForm()
 
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-window__close')) {
